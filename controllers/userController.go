@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	guuid "github.com/google/uuid"
 
 	"authentication-service/database"
 
@@ -16,7 +17,6 @@ import (
 	"authentication-service/models"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -93,8 +93,8 @@ func Register() gin.HandlerFunc {
 
 		user.Created_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 		user.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		user.ID = primitive.NewObjectID()
-		user.User_id = user.ID.Hex()
+		user.Id = guuid.New()
+		user.User_id = user.Id.String()
 		token, refreshToken, _ := helper.GenerateTokens(*user.User_name, user.User_id)
 		user.Token = &token
 		user.Refresh_token = &refreshToken
