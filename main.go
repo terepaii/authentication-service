@@ -13,7 +13,7 @@ import (
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "4433"
+		port = "44433"
 	}
 
 	router := gin.New()
@@ -21,5 +21,12 @@ func main() {
 	routes.UserRoutes(router)
 
 	router.Use(middleware.Authentication())
+
+	router.GET("/api-1", func(c *gin.Context) {
+
+        c.JSON(200, gin.H{"success": "Access granted for api-1"})
+
+    })
+
 	router.Run(":" + port)
 }
